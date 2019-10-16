@@ -16,38 +16,46 @@ app.use(express.json());
 app.post('/recognize', async (req, res) => {
   const body = req.body;
   console.log(body);
-  const referenceImage = await canvas.loadImage(person2url)
-  const queryImage = await canvas.loadImage(body.photo)
 
-  const resultsRef = await faceapi.detectSingleFace(referenceImage, faceDetectionOptions)
-    .withFaceLandmarks()
-    .withFaceDescriptor()
+  try {
+    const referenceImage = await canvas.loadImage(person2url)
+    const queryImage = await canvas.loadImage(body.photo)
+  
+    const resultsRef = await faceapi.detectSingleFace(referenceImage, faceDetectionOptions)
+      .withFaceLandmarks()
+      .withFaceDescriptor()
+  
+      console.log(resultsRef);
+  
+    const resultsQuery = await faceapi.detectSingleFace(queryImage, faceDetectionOptions)
+      .withFaceLandmarks()
+      .withFaceDescriptor()
+  
+    const faceMatcher = new faceapi.FaceMatcher(resultsRef)
+  
+    console.log(resultsQuery);
+  
+    if (resultsQuery) {
+      const bestMatch = faceMatcher.findBestMatch(resultsQuery.descriptor);
+      console.log(bestMatch);
+      console.log(bestMatch.distance);
+      let isAuthenticated = 0;
+      if(bestMatch.distance < 0.6) {
+        isAuthenticated = 1
+        return res.send({isAuthenticated: isAuthenticated});
+      } else {
+         return res.status(401).send('Error Unathorized');
+  
+      }
+  
+      }
+    
+  } catch (error) {
+    console.log(error);
+    return res.status(401).send('Error Unathorized');
+  }
 
-    console.log(resultsRef);
-
-  const resultsQuery = await faceapi.detectSingleFace(queryImage, faceDetectionOptions)
-    .withFaceLandmarks()
-    .withFaceDescriptor()
-
-  const faceMatcher = new faceapi.FaceMatcher(resultsRef)
-
-  console.log(resultsQuery);
-
-  if (resultsQuery) {
-    const bestMatch = faceMatcher.findBestMatch(resultsQuery.descriptor);
-    console.log(bestMatch);
-    console.log(bestMatch.distance);
-    let isAuthenticated = 0;
-    if(bestMatch.distance < 0.6) {
-      isAuthenticated = 1
-      return res.send({isAuthenticated: isAuthenticated});
-    } else {
-       return res.status(401).send('Error Unathorized');
-
-    }
-
-    }
-  return res.status(401).send('Error Unathorized');
+ 
 
 });
 
