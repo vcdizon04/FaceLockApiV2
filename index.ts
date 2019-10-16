@@ -12,9 +12,10 @@ const person2url = "vincen2.jpg";
            const person4url = "vincent4.jpg";
            const person5url = "vincent5.jpg";
 
-
-
+app.use(express.json());
 app.post('/recognize', async (req, res) => {
+  const body = req.body;
+  console.log(body);
   const referenceImage = await canvas.loadImage(person2url)
   const queryImage = await canvas.loadImage(person5url)
 
@@ -35,7 +36,7 @@ app.post('/recognize', async (req, res) => {
   if (resultsQuery) {
     const bestMatch = faceMatcher.findBestMatch(resultsQuery.descriptor);
     console.log(bestMatch);
-     return res.send(bestMatch);
+     return res.send(body);
 
     }
     return res.status(401).send('Error');
