@@ -39,12 +39,15 @@ app.post('/recognize', async (req, res) => {
     console.log(bestMatch.distance);
     let isAuthenticated = 0;
     if(bestMatch.distance < 0.6) {
+      return res.send({isAuthenticated: isAuthenticated});
       isAuthenticated = 1
-    }
-    return res.send({isAuthenticated: isAuthenticated});
+    } else {
+       return res.status(401).send('Error Unathorized');
 
     }
-    return res.status(401).send('Error');
+
+    }
+  return res.status(401).send('Error Unathorized');
 
 });
 
