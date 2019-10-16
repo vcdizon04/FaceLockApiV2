@@ -36,8 +36,9 @@ app.post('/recognize', async (req, res) => {
   if (resultsQuery) {
     const bestMatch = faceMatcher.findBestMatch(resultsQuery.descriptor);
     console.log(bestMatch);
+    console.log(bestMatch.distance);
     let isAuthenticated = 0;
-    if(bestMatch.distance > 0.6) {
+    if(bestMatch.distance < 0.6) {
       isAuthenticated = 1
     }
     return res.send({isAuthenticated: isAuthenticated});
