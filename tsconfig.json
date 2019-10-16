@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+      "jsx": "preserve",
+      "allowJs": false,
+      "noEmit": true,
+      "strict": true,
+      "lib": ["dom", "esnext"],
+      "skipLibCheck": true,
+    },
+
+    "include": ["src"],
+    "exclude": [
+        "node_modules/",
+        "build/",
+        "scripts/",
+        "acceptance-tests/",
+        "webpack/",
+        "jest/",
+        "src/setupTests.ts",
+        "public/",
+        "config/"
+      ]
+}
