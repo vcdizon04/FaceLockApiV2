@@ -7,7 +7,7 @@ import { canvas, faceDetectionNet, faceDetectionOptions, saveFile } from './comm
 const REFERENCE_IMAGE = '../images/bbt1.jpg'
 const QUERY_IMAGE = '../images/bbt4.jpg'
 
-const person2url = "vincen2.jpg";
+          const person2url = "vincen2.jpg";
            const person3url = "vincent3.jpg";
            const person4url = "vincent4.jpg";
            const person5url = "vincent5.jpg";
@@ -17,7 +17,7 @@ app.post('/recognize', async (req, res) => {
   const body = req.body;
   console.log(body);
   const referenceImage = await canvas.loadImage(person2url)
-  const queryImage = await canvas.loadImage(person5url)
+  const queryImage = await canvas.loadImage(body.photo)
 
   const resultsRef = await faceapi.detectSingleFace(referenceImage, faceDetectionOptions)
     .withFaceLandmarks()
